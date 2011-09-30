@@ -6,10 +6,12 @@ require "bundler/setup"
 
 require "mg_hotdog"
 require 'mg_hotdog/parts/hello_part'
+require 'mg_hotdog/parts/pianobar_part'
 
 robot = MgHotdog::Robot.new(ENV["CAMPFIRE_ROOM"])
 
 #add all the different parts that we want our bot to have
 robot.parts << HelloPart.new
+robot.parts << PianobarPart.new
 
 robot.wake_up
