@@ -1,4 +1,3 @@
-require 'tinder'
 module MgHotdog
   class Connection
     def initialize
