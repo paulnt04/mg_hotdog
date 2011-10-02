@@ -20,7 +20,7 @@ module MgHotdog
 
     describe "processing messages" do
       it "should delegate processing to parts" do
-        params = {body: 'something cool'}
+        params = Hashie::Mash.new( {body: 'something cool'})
 
         robot = Robot.new(@room_number)
 

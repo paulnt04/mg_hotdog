@@ -21,7 +21,9 @@ module MgHotdog
         @stream = @room.message_stream
 
         @stream.each_item do |item|
-          EM.defer { process MultiJson.decode(item), self }
+          puts message.inspect
+          message = Hashie::Mash.new MultiJson.decode(item) 
+          self.process( message)
         end
       end
     end   
@@ -29,11 +31,10 @@ module MgHotdog
     #paritally borrowed from Tinder
     def process message
 
-      message[:user] = @room.user(message[:user_id])
-
-      puts message
+      message["user"] = @room.user(message["user_id"])
+      puts 'got past user'
       @parts.each do | pattern, part, type|
-        if message[type] && message[type].match(pattern)
+        if message[type] && message[type].match(message[:body])
           part.process(message, self) 
         end
       end
