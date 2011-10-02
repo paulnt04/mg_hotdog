@@ -4,7 +4,7 @@ module MgHotdog
   class Robot
 
     attr_accessor :parts
-    attr_reader :room
+    attr_accessor :room
 
     def initialize(room_number)
       @parts = []
@@ -26,7 +26,11 @@ module MgHotdog
       end
     end   
     
+    #paritally borrowed from Tinder
     def process message
+
+      message[:user] = @room.user(message[:user_id])
+
       puts message
       @parts.each do | pattern, part, type|
         if message[type] && message[type].match(pattern)

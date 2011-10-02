@@ -20,10 +20,12 @@ module MgHotdog
 
     describe "processing messages" do
       it "should delegate processing to parts" do
-
         params = {body: 'something cool'}
 
         robot = Robot.new(@room_number)
+
+        robot.room = double()
+        robot.room.stub(:user).and_return(nil)
 
         part = double()
         part.stub(:process)
