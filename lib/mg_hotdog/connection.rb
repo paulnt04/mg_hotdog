@@ -7,7 +7,7 @@ module MgHotdog
     end
 
     def open room_id
-      @campfire.find_room_by_id room_id
+      @campfire.find_room_by_id room_id.to_i
     end
   end
 end
