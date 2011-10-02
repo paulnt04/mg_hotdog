@@ -1,4 +1,5 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+require 'rspec'
 require 'tinder'
 require 'mg_hotdog'
 require 'fakeweb'
