@@ -1,3 +1,6 @@
+#Most of this is blatatently ripped out of the Tinder Gem. 
+#https://github.com/collectiveidea/tinder
+
 module Tinder
   class Room
     def message_stream(options = {})
