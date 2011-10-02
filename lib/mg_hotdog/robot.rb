@@ -9,26 +9,28 @@ module MgHotdog
     def initialize(room_number)
       @parts = []
       @campfire = Connection.new
-      @room = @campfire.open(room_number)
+      @room_id = room_number
     end
 
     def wake_up
+       @room = @campfire.open(@room_id)
+
       puts @parts.inspect
       @room.join
       EventMachine::run do
         @stream = @room.message_stream
 
-        @stream.each_item do |message|
-          EM.defer { route message }
+        @stream.each_item do |item|
+          EM.defer { process MultiJson.decode(item), self }
         end
       end
     end   
     
-    def route message
+    def process message
       puts message
-      @parts.each do |part|
-        if message.body && message[part[2]].match(part[0])
-          EM.defer { part[1].process(message, self) }
+      @parts.each do | pattern, part, type|
+        if message[type] && message[type].match(pattern)
+          part.process(message, self) 
         end
       end
     end
