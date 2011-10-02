@@ -6,7 +6,8 @@ module MgHotdog
 
     def initialize(room_number)
       @parts = []
-      @room = Connection.open(room_number) 
+      @campfire = Connection.new
+      @room = @campfire.open(room_number)
     end
 
     def wake_up

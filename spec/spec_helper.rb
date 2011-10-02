@@ -5,6 +5,9 @@ require 'fakeweb'
 
 FakeWeb.allow_net_connect = false
 
+ENV["CAMPFIRE_TOKEN"] = "somethingfake"
+
+
 def mock_message_and_robot
         @robot = double()
 
