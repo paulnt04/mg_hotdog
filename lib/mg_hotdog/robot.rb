@@ -21,10 +21,12 @@ module MgHotdog
         @stream = @room.message_stream
 
         @stream.each_item do |item|
+          EM.defer{
            message = Hashie::Mash.new MultiJson.decode(item) 
            puts message.inspect
 
           self.process( message)
+          }
         end
       end
     end   
