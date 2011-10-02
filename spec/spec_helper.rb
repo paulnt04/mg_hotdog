@@ -1,6 +1,9 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
-
+require 'tinder'
 require 'mg_hotdog'
+require 'fakeweb'
+
+FakeWeb.allow_net_connect = false
 
 def mock_message_and_robot
         @robot = double()
@@ -11,3 +14,5 @@ def mock_message_and_robot
         @message = double()
         @message.stub(:user).and_return(@user)
 end
+
+

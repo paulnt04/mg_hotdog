@@ -2,4 +2,8 @@ source "http://rubygems.org"
 
 gem 'tinder'
 
-gem 'rspec', :group => [:test, :development]
+group :test, :development do
+  gem 'rspec'
+  gem 'fakeweb'
+end
+
