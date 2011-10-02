@@ -18,6 +18,19 @@ module Tinder
         @stream = Twitter::JSONStream.connect(options)
 
 
+        @stream.on_error do |message|
+          raise ListenFailed.new("got an error! #{message.inspect}!")
+        end
+
+        @stream.on_max_reconnects do |timeout, retries|
+          raise ListenFailed.new("Tried #{retries} times to connect. Got disconnected from #{@name}!")
+        end
+
+        # if we really get disconnected
+        raise ListenFailed.new("got disconnected from #{@name}!") if !EventMachine.reactor_running?
+
+        @stream
+
     end    
   end
 end
@@ -45,22 +58,19 @@ module MgHotdog
         @stream = @room.message_stream
 
         @stream.each_item do |message|
-          puts message
+          EM.defer { route message }
         end
-
-        @stream.on_error do |message|
-          raise ListenFailed.new("got an error! #{message.inspect}!")
-        end
-
-        @stream.on_max_reconnects do |timeout, retries|
-          raise ListenFailed.new("Tried #{retries} times to connect. Got disconnected from #{@name}!")
-        end
-
-        # if we really get disconnected
-        raise ListenFailed.new("got disconnected from #{@name}!") if !EventMachine.reactor_running?
-
       end
     end   
+    
+    def route message
+      puts message
+      @parts.each do |part|
+        if message.body && message[part[2]].match(part[0])
+          EM.defer { part[1].process(message, self) }
+        end
+      end
+    end
 
     def listen(pattern, responder)
       @parts << [pattern, responder, :body]
