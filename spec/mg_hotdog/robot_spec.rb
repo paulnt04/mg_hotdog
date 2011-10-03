@@ -31,7 +31,8 @@ module MgHotdog
         part.stub(:process)
         part.should_receive(:process)
 
-        robot.listen /.*/, part 
+        robot.parts << part
+
         EM::run do
         robot.process(params)
         EM.stop

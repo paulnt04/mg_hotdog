@@ -21,12 +21,8 @@ module MgHotdog
     end
 
     def process message
-      @parts.each do | pattern, part, type|
-        EM.defer {
-          if message[type] && message[type].match(pattern)
-            part.process(message, self) 
-          end
-        }
+      @parts.each do |part|
+        EM.defer { part.process(message, self) }
       end
     end
 
@@ -44,3 +40,4 @@ module MgHotdog
   end
 
 end
+
