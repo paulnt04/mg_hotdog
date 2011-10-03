@@ -1,5 +1,4 @@
 require 'eventmachine'
-
 module MgHotdog
   class Robot
 
@@ -13,32 +12,21 @@ module MgHotdog
     end
 
     def wake_up
+      puts @parts.inspect
        @room = @campfire.open(@room_id)
 
-      puts @parts.inspect
-      @room.join
-      EventMachine::run do
-        @stream = @room.message_stream
+       @room.listen do |message|
+         process(message)
+       end
+    end
 
-        @stream.each_item do |item|
-          EM.defer{
-           message = Hashie::Mash.new MultiJson.decode(item) 
-           puts message.inspect
-
-          self.process( message)
-          }
-        end
-      end
-    end   
-    
-    #paritally borrowed from Tinder
     def process message
-
-      message["user"] = @room.user(message["user_id"])
       @parts.each do | pattern, part, type|
-        if message[type] && message[type].match(pattern)
-          part.process(message, self) 
-        end
+        EM.defer {
+          if message[type] && message[type].match(pattern)
+            part.process(message, self) 
+          end
+        }
       end
     end
 

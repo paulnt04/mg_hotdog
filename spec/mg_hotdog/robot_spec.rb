@@ -29,11 +29,13 @@ module MgHotdog
 
         part = double()
         part.stub(:process)
-        part.should_receive(:process).with(params, robot)
+        part.should_receive(:process)
 
         robot.listen /.*/, part 
-
+        EM::run do
         robot.process(params)
+        EM.stop
+        end
       end
 
     end
