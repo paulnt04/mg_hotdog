@@ -13,7 +13,7 @@ robot = MgHotdog::Robot.new(ENV["CAMPFIRE_ROOM"])
 
 #add all the different parts that we want our bot to have
 
-robot.listen /hello mg_hotdog/i, HelloPart.new
-robot.listen /whatup mg_hotdog/i, WhatupPart.new
-robot.listen_for /EnterMessage/, in: :type, with: PabloPart.new
+robot.parts << HelloPart.new
+robot.parts << WhatupPart.new
+robot.parts << PabloPart.new
 robot.wake_up

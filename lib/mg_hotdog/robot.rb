@@ -1,4 +1,6 @@
 require 'eventmachine'
+require 'tinder'
+
 module MgHotdog
   class Robot
 
