@@ -1,5 +1,7 @@
 class HelloPart
   def process(message, robot)
-    robot.speak("Hello #{message.user.name}.") 
+    if message.body && message.body.match(/hello mg_hotdog/i)
+      robot.speak("Hello #{message.user.name}.") 
+    end
   end
 end
