@@ -11,7 +11,12 @@ require 'mg_hotdog/parts/pianobar_part'
 robot = MgHotdog::Robot.new(ENV["CAMPFIRE_ROOM"])
 
 #add all the different parts that we want our bot to have
+<<<<<<< HEAD
 robot.parts << HelloPart.new
 robot.parts << PianobarPart.new
+=======
+
+robot.listen /hello mg_hotdog/i, HelloPart.new
+>>>>>>> master
 
 robot.wake_up
