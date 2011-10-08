@@ -16,4 +16,10 @@ robot = MgHotdog::Robot.new(ENV["CAMPFIRE_ROOM"])
 robot.parts << HelloPart.new
 robot.parts << WhatupPart.new
 robot.parts << PabloPart.new
-robot.wake_up
+while true
+	begin
+		robot.wake_up
+	rescue  e
+		puts "ROBOT DIED #{e.message}"
+	end
+end
