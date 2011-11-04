@@ -7,10 +7,17 @@ require 'mg_hotdog/parts/hello_part'
       before :each do
         mock_message_and_robot
       end
-      it "should say hello to the author of the message" do
-        @message.stub(:body).and_return( 'hello mg_hotdog')
-        
-        @robot.should_receive(:speak).with(/Hello #{@user.name}/)
+      ['hello','HeLlO','HEY','Hi'].each do |word|
+        it "should say hello to the author of the message \"#{word} mg_hotdog\"" do
+          @message.stub(:body).and_return("#{word} mg_hotdog")
+          @robot.should_receive(:speak).with(/Hello #{@user.name}/)
+          HelloPart.new.process(@message, @robot)
+        end
+      end
+
+      it "should not say hello to the author of a mis-matched message" do
+        @message.stub(:body).and_return('say \'hello mg_hotdog\'')
+        @robot.should_not_receive(:speak)
         HelloPart.new.process(@message, @robot)
       end
 

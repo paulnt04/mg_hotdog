@@ -7,9 +7,17 @@ require 'mg_hotdog/parts/whatup_part'
       before :each do
         mock_message_and_robot
       end
-      it "should say 'Whazzz up hommie' to the author of the message" do
-        @message.stub(:body).and_return('whatup mg_hotdog')
-        @robot.should_receive(:speak).with(/Whazzz up hommie/)
+      ['whatup','what\'s up','whazzup','wazzup'].each do |word|
+        it "should say 'Whazzz up hommie' to the author of the message, \"#{word} mg_hotdog\"" do
+          @message.stub(:body).and_return("#{word} mg_hotdog")
+          @robot.should_receive(:speak).with(/Whazzz up hommie/)
+          WhatupPart.new.process(@message, @robot)
+        end
+      end
+
+      it "should not respond 'Whazzz up hommie' to a mis-matched message" do
+        @message.stub(:body).and_return('say \'whatup mg_hotdog\'')
+        @robot.should_not_receive(:speak)
         WhatupPart.new.process(@message, @robot)
       end
 
