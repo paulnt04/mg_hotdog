@@ -6,7 +6,7 @@ require "bundler/setup"
 
 require "mg_hotdog"
 require 'mg_hotdog/parts/hello_part'
-require 'mg_hotdog/parts/pablo_part'
+require 'mg_hotdog/parts/welcome_part'
 require 'mg_hotdog/parts/whatup_part'
 
 robot = MgHotdog::Robot.new(ENV["CAMPFIRE_ROOM"])
@@ -15,7 +15,7 @@ robot = MgHotdog::Robot.new(ENV["CAMPFIRE_ROOM"])
 
 robot.parts << HelloPart.new
 robot.parts << WhatupPart.new
-robot.parts << PabloPart.new
+robot.parts << WelcomePart.new
 while true
 	begin
 		robot.wake_up
