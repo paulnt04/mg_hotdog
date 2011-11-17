@@ -15,7 +15,7 @@ class WelcomePart
     elsif message.type =~ /EnterMessage/ && !(@ignored_users.include?(message.user.name))
       robot.speak("Welcome #{message.user.name}")
     end
-    if message.body && message.body.match(/.*(fuck(\s)?|off(\s)?|mg_hotdog(\s)?|(go\sto\s)|hell(\s)?){3}.*/i) && !(@ignored_users.include?(message.user.name))
+    if message.body && message.body.match(/.*(fuck(ing)?(\s)?|off(\s)?|mg_hotdog(\s)?|(go\sto\s)|hell(\s)?|please(\s)?|stop\swelcoming\sme(\s)?){3,4}.*/i) && !(@ignored_users.include?(message.user.name))
       begin
         robot.database.insert("'#{message.user.name}'",'ignored_users')
         @ignored_users << message.user.name

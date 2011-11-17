@@ -43,7 +43,7 @@ describe WelcomePart do
     WelcomePart.new(@robot).process(@message,@robot)
   end
 
-  it "should add a user to ignored_users" do
+  it "should add a user to ignored_users with rude message" do
     @message.stub(:type).and_return("TextMessage")
     @message.stub(:body).and_return("Fuck off mg_hotdog")
     @user.stub(:name).and_return('Ethan Soutar-rau')
@@ -53,6 +53,18 @@ describe WelcomePart do
 
     WelcomePart.new(@robot).process(@message,@robot)
   end
+
+  it "should add a user to ignored_users with polite message" do
+    @message.stub(:type).and_return("TextMessage")
+    @message.stub(:body).and_return("Please stop welcoming me mg_hotdog")
+    @user.stub(:name).and_return('Ethan Soutar-rau')
+    @db.stub(:select).with('*','ignored_users').and_return([])
+    @db.should_receive(:insert).with("'Ethan Soutar-rau'",'ignored_users')
+    @robot.should_receive(:speak).with("I will no longer acknowledge when Ethan Soutar-rau enters this room.")
+
+    WelcomePart.new(@robot).process(@message,@robot)
+  end
+
 
   it "should remove a user from ignored_users" do
     @message.stub(:type).and_return("TextMessage")
