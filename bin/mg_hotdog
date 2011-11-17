@@ -20,7 +20,7 @@ robot.parts << WelcomePart.new(db)
 while true
 	begin
 		robot.wake_up
-	rescue  e
+	rescue
 		puts "ROBOT DIED #{e.message}"
 	end
 end
