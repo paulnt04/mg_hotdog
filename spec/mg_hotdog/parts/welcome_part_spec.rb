@@ -83,7 +83,7 @@ describe WelcomePart do
     @db.stub(:select).with('*','ignored_users').and_return(['Ethan Soutar-rau'])
     @user.stub(:name).and_return('Ethan Soutar-rau')
     @db.should_not_receive(:insert).with("'Ethan Soutar-rau'",'ignored_users')
-    @robot.should_not_receive(:speak)
+    @robot.should_receive(:speak).with(/(fuck\syou|go\sto\shell)/i)
 
     WelcomePart.new(@robot).process(@message,@robot)
   end

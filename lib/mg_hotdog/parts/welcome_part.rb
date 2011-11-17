@@ -14,8 +14,7 @@ class WelcomePart
       robot.speak("PABLO!!!!!")
     elsif message.type =~ /EnterMessage/ && !(@ignored_users.include?(message.user.name))
       robot.speak("Welcome #{message.user.name}")
-    end
-    if message.body && message.body.match(/.*(fuck(ing)?(\s)?|off(\s)?|mg_hotdog(\s)?|(go\sto\s)|hell(\s)?|please(\s)?|stop\swelcoming\sme(\s)?){3,4}.*/i) && !(@ignored_users.include?(message.user.name))
+    elsif message.body && message.body.match(/^(fuck(ing)?(\s)?|off(\s)?|mg_hotdog(\s)?|(go\sto\s)|hell(\s)?|please(\s)?|stop\swelcoming\sme(\s)?){3,4}.*/i) && !(@ignored_users.include?(message.user.name))
       begin
         robot.database.insert("'#{message.user.name}'",'ignored_users')
         @ignored_users << message.user.name
@@ -24,8 +23,15 @@ class WelcomePart
         robot.speak("I cannot do that at this time.")
         puts "ERROR::SQLite3, cannot write to db"
       end
-    end
-    if message.body && message.body.match(/please welcome me.+mg_hotdog/i) && @ignored_users.include?(message.user.name)
+    elsif message.body && message.body.match(/^(fuck(ing)?(\s)?|off(\s)?|mg_hotdog(\s)?|(go\sto\s)|hell(\s)?|please(\s)?|stop\swelcoming\sme(\s)?){3,4}.*/i) && (@ignored_users.include?(message.user.name))
+      if message.body.match(/hell/)
+        robot.speak("Go to hell too")
+      elsif message.body.match(/fuck\soff/)
+        robot.speak("Fuck you too")
+      else
+        robot.speak("Fuck you")
+      end
+    elsif message.body && message.body.match(/^please welcome me.+mg_hotdog/i) && @ignored_users.include?(message.user.name)
       begin
         robot.database.delete("name='#{message.user.name}'",'ignored_users')
         @ignored_users.delete_if{|user| user == message.user.name}
