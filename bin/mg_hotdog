@@ -3,19 +3,20 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
 
 require "bundler/setup"
-
+require 'sqlite3'
 require "mg_hotdog"
 require 'mg_hotdog/parts/hello_part'
 require 'mg_hotdog/parts/welcome_part'
 require 'mg_hotdog/parts/whatup_part'
 
+db = SQLite3::Database.open(File.expand_path(File.dirname(__FILE__) + '/../db/mg_hotdog.sqlite'))
 robot = MgHotdog::Robot.new(ENV["CAMPFIRE_ROOM"])
 
 #add all the different parts that we want our bot to have
 
 robot.parts << HelloPart.new
 robot.parts << WhatupPart.new
-robot.parts << WelcomePart.new
+robot.parts << WelcomePart.new(db)
 while true
 	begin
 		robot.wake_up

@@ -19,4 +19,9 @@ def mock_message_and_robot
         @message.stub(:user).and_return(@user)
 end
 
-
+def mock_ignored_user_db
+  @message.stub(:body)
+  @db = double()
+  @db.stub(:execute).with('select * from ignored_users').and_return([])
+  @db.stub(:execute).with('create table ignored_users (name varchar(255))')
+end
