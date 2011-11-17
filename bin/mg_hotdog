@@ -21,6 +21,6 @@ while true
 	begin
 		robot.wake_up
 	rescue
-		puts "ROBOT DIED #{e.message}"
+		puts "ROBOT DIED #{$!.message}"
 	end
 end
