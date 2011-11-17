@@ -9,14 +9,14 @@ require 'mg_hotdog/parts/hello_part'
 require 'mg_hotdog/parts/welcome_part'
 require 'mg_hotdog/parts/whatup_part'
 
-db = SQLite3::Database.open(File.expand_path(File.dirname(__FILE__) + '/../db/mg_hotdog.sqlite'))
-robot = MgHotdog::Robot.new(ENV["CAMPFIRE_ROOM"])
+db = File.expand_path(File.dirname(__FILE__) + '/../db/mg_hotdog.sqlite')
+robot = MgHotdog::Robot.new(ENV["CAMPFIRE_ROOM"], db)
 
 #add all the different parts that we want our bot to have
 
 robot.parts << HelloPart.new
 robot.parts << WhatupPart.new
-robot.parts << WelcomePart.new(db)
+robot.parts << WelcomePart.new(robot)
 while true
 	begin
 		robot.wake_up

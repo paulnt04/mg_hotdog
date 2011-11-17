@@ -6,11 +6,13 @@ module MgHotdog
 
     attr_accessor :parts
     attr_accessor :room
+    attr_accessor :database
 
-    def initialize(room_number)
+    def initialize(room_number, database_path)
       @parts = []
       @campfire = Connection.new
       @room_id = room_number
+      @database = Database.new(database_path)
     end
 
     def wake_up
