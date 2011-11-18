@@ -26,7 +26,14 @@ module MgHotdog
 
     def process message
       @parts.each do |part|
-        EM.defer { part.process(message, self) }
+        EM.defer {
+          begin
+            part.process(message, self)
+          rescue Exception => e
+            speak("I cannot do that at this moment due to: #{e.class.to_s}: #{e.message}.")
+            puts ("#{e.class.to_s}: #{e.message}")
+          end
+        }
       end
     end
 

@@ -42,7 +42,25 @@ module MgHotdog
         EM.stop
         end
       end
+      it "should be able to throw an error" do
+        params = Hashie::Mash.new( {body: 'something cool'})
 
+        robot = Robot.new(@room_number,@db_path)
+        robot.room = double()
+        robot.room.stub(:user).and_return(nil)
+
+        part = double()
+        part.stub(:process).and_raise('a thrown error')
+
+        robot.parts << part
+        robot.stub(:speak)
+        robot.should_receive(:speak).with("I cannot do that at this moment due to: RuntimeError: a thrown error.")
+
+        EM::run do
+          robot.process(params)
+          EM::stop
+        end
+      end
     end
   end
 end

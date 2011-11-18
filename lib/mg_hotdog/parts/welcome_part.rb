@@ -20,12 +20,11 @@ class WelcomePart
         @ignored_users << message.user.name
         robot.speak("I will no longer acknowledge when #{message.user.name} enters this room.")
       rescue
-        robot.speak("I cannot do that at this time.")
-        puts "ERROR::SQLite3, cannot write to db"
+        raise IOError.new('database connection')
       end
     elsif message.body && message.body.match(/^(fuck(ing)?(\s)?|off(\s)?|mg_hotdog(\s)?|(go\sto\s)|hell(\s)?|please(\s)?|stop\swelcoming\sme(\s)?){3,4}.*/i) && (@ignored_users.include?(message.user.name))
       if message.body.match(/hell/)
-        robot.speak("Go to hell too")
+        robot.speak("Why don't you go to hell?")
       elsif message.body.match(/fuck\soff/)
         robot.speak("Fuck you too")
       else
@@ -37,8 +36,7 @@ class WelcomePart
         @ignored_users.delete_if{|user| user == message.user.name}
         robot.speak("I will now acknowledge when #{message.user.name} enters this room.")
       rescue
-        robot.speak("I cannot do that at this time.")
-        puts "ERROR::SQLite3, cannot write to db"
+        raise IOError.new('database connection')
       end
     end
   end
